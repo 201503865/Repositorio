@@ -166,7 +166,9 @@ Obtener_Datos = function() {
             var datos_ram = fs.readFileSync(directorio_proceso+"/statm");
             var cantida_ram = datos_ram.toString().split(' ');
             cantida_ram=cantida_ram[0];
-            var porcentaje_ram = cantida_ram/10000;
+			var memtotal =  Math.round(os.totalmem() * 100) / 100;
+			memtotal = memtotal/100;
+            var porcentaje_ram = cantida_ram/memtotal;
             porcentaje_ram = Math.round(porcentaje_ram*100)/100;
             //console.log(id);
             //console.log(usuario);
