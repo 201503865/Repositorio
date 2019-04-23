@@ -3,24 +3,24 @@
 #include  <linux/kernel.h>
 #include  <linux/proc_fs.h>
 #include  <linux/sched.h>
+#include  <linux/vmstat.h>
+#include  <linux/moduleparam.h>
+#include  <asm/uaccess.h>
+#include  <linux/slab.h> 
+#include  <linux/string.h>
 #include  <linux/fs.h>
 #include  <linux/mm.h>
 #include  <linux/mman.h>
 #include  <linux/mmzone.h>
 #include  <linux/swap.h>
-#include  <linux/vmstat.h>
-#include <linux/moduleparam.h>
-#include <asm/uaccess.h>
-#include <linux/slab.h> 
-#include <linux/string.h>
 
 MODULE_LICENSE("GPL");
-MODULE_DESCRIPTION("Modulo de Memoria");
+MODULE_DESCRIPTION("Modulo Memoria");
 MODULE_AUTHOR("Julia Sierra");
 
-#define ARCHIVO_PROC "info_memoria"
+#define ARCHIVO_PROC "memo_201503865"
 
-static int read_p;
+static int puntero;
 static char *texto;
 
 
@@ -67,7 +67,7 @@ int abrir_archivo(struct inode *sp_inode, struct file *sp_file)
     percent = (usado * 100)/mem_abs;
     porcentaje_utilizacion = (long)percent;
     itoa(porcentaje_utilizacion , porcentaje, 10);
-    read_p = 1;
+    puntero = 1;
     texto = kmalloc(sizeof(char)*300, __GFP_IO | __GFP_FS);
     if(texto == NULL)
     {
@@ -90,8 +90,8 @@ int abrir_archivo(struct inode *sp_inode, struct file *sp_file)
 static ssize_t archivo(struct file *file, char __user *ubuf,size_t count, loff_t *ppos) 
 {
     int len = strlen(texto);  
-    read_p = !read_p;
-    if(read_p)
+    puntero = !puntero;
+    if(puntero)
     {
         return 0;
     }    
